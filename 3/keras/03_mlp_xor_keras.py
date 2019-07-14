@@ -2,6 +2,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 from keras.optimizers import SGD
+import matplotlib.pyplot as plt
 
 np.random.seed(123)
 
@@ -43,3 +44,34 @@ print(Y == classes)
 print()
 print('output probability:')
 print(prob)
+print('W:', model.get_weights()[0])
+print('b:', model.get_weights()[1])
+
+Weight = model.get_weights()[0] # Optimized Weight 
+Bias = model.get_weights()[1]   # Optimized Bias
+
+'''
+data visualization
+'''
+plot_x = np.array([X[:, 0].min(), X[:, 0].max()]).reshape(2, 1)
+Bias = Bias.reshape(2, 1)
+temp1 = ((Weight[1].reshape(2, 1) * plot_x[0]) + (Bias))
+temp2 = ((Weight[1].reshape(2, 1) * plot_x[1]) + (Bias))
+plot_y1 = np.zeros(2).reshape(2, 1)
+plot_y2 = np.zeros(2).reshape(2, 1)
+for i in range(2):
+    plot_y1[i] = (-1/(Weight[0][i])) * temp1[i][0]
+    plot_y2[i] = (-1/(Weight[0][i])) * temp2[i][0]
+    
+data = np.hstack([X, Y])
+colors = {0:'red', 1:'blue', 2:'green'}
+plt.figure()
+rows_data, cols_data = data.shape
+for i in range(rows_data):
+    if (data[i][2] == 1):
+        plt.scatter(data[i][0], data[i][1], c=colors[0])
+    else:
+        plt.scatter(data[i][0], data[i][1], c=colors[1])
+plt.plot(plot_x, [plot_y1[0][0], plot_y2[0][0]])
+plt.plot(plot_x, [plot_y1[1][0], plot_y2[1][0]])
+plt.show()

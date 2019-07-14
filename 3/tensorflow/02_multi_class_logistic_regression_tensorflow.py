@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plt
 from sklearn.utils import shuffle
 
 np.random.seed(0)
@@ -69,11 +70,12 @@ for epoch in range(20):
 X_, Y_ = shuffle(X, Y)
 
 classified = correct_prediction.eval(session=sess, feed_dict={
-    x: X_[0:10],
-    t: Y_[0:10]
+    x: X_[:],
+    t: Y_[:]
 })
 prob = y.eval(session=sess, feed_dict={
-    x: X_[0:10]
+    x: X_[:],
+    t: Y_[:]
 })
 
 print('classified:')
@@ -81,3 +83,9 @@ print(classified)
 print()
 print('output probability:')
 print(prob)
+print('W:', sess.run(W))
+print('b:', sess.run(b))
+
+Weight = sess.run(W) # Optimized Weight 
+Bias = sess.run(b)   # Optimized Bias 
+

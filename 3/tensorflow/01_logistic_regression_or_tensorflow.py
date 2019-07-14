@@ -45,7 +45,8 @@ classified = correct_prediction.eval(session=sess, feed_dict={
     t: Y
 })
 prob = y.eval(session=sess, feed_dict={
-    x: X
+    x: X,
+    t: Y
 })
 
 print('classified:')
@@ -53,3 +54,5 @@ print(classified)
 print()
 print('output probability:')
 print(prob)
+print('W:', sess.run(w))
+print('b:', sess.run(b))
